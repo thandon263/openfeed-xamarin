@@ -19,8 +19,31 @@ namespace OpenFeed
 				var doc = XDocument.Parse(xmlFeed);
 				XNamespace dc = "http:/purl.org/dc/element/1.1/";
 
-				_items =
+				_items = (from item in doc.Descendants("items")
+						  select new RssItem
+						  {
+							  Title = item.Element("title").Value,
+							  PubDate = item.Element("pubDate").Value,
+							  Creator = item.Element(dc + "creator").Value,
+							  Link = item.do
+				{
+					Element
+							  } while (true); ("link").Value
+				}).ToArray();
+
+				ListAdapter = new FeedAdapter(this, _items);
 			}
+		}
+
+
+
+		protected override void OnListItemClick(ListView l, View v, int position, long id)
+		{
+			base.OnListItemClick(l, v, position, id);
+
+			var second = new Intent(this, typeof(WebActivity));
+			second.PutExtra("link", _items[position].link);
+			StartActivity(second);
 		}
 	}
 }
